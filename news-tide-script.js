@@ -38,7 +38,10 @@ const loadNews = async id => {
 const displayNews = (allnews) => {
     rankElement(allnews);
     // console.log(allnews);
+    let elementAmount = document.getElementById('item-amount');
+    elementAmount.innerText = `${allnews.length} Items found `
     let newsPlacementElement = document.getElementById('news-things');
+
     newsPlacementElement.innerHTML = "";
 
 
