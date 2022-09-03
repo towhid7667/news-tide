@@ -131,6 +131,7 @@ const displayDetails = newsDetails => {
     detailElement.innerHTML = `
     <img src="${newsDetails[0].image_url}" alt="" class="w-8/12 mx-auto h-full">
     <p class="text-white text-xl">Author: ${newsDetails[0].author.name ? newsDetails[0].author.name : 'No authors Found'}</p>
+    <p class="text-white text-xl">${newsDetails[0].details.slice(0 - 1000)}</p>
    
     
     `
