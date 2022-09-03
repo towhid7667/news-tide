@@ -9,6 +9,7 @@ const loadCategories = async newCategories => {
 
 const displayCategories = categories => {
 
+
     let categoryElement = document.getElementById('category-things');
 
 
@@ -34,7 +35,8 @@ const loadNews = async id => {
     // console.log(data.data);
 }
 
-const displayNews = (allnews, dataLimit) => {
+const displayNews = (allnews) => {
+    rankElement(allnews);
     // console.log(allnews);
     let newsPlacementElement = document.getElementById('news-things');
     newsPlacementElement.innerHTML = "";
@@ -43,6 +45,8 @@ const displayNews = (allnews, dataLimit) => {
 
     allnews.forEach(news => {
         // console.log(news);
+
+
         let newsdocument = document.createElement("div")
 
         newsdocument.innerHTML = `
@@ -50,7 +54,7 @@ const displayNews = (allnews, dataLimit) => {
         <img src="${news.thumbnail_url}" class="mx-auto lg:py-0 py-3" alt="">
                     <div class="texts mx-10">
                         <h1 class="text-2xl font-medium">${news.title}</h1>
-                        <p class="text-justify my-2">${news.details.slice(0, 1000)}</p>
+                        <p class="text-justify my-2">${news.details.slice(0, 700)}</p>
 
                         <div class="other-details lg:flex justify-between items-center my-5 ">
                             <div class="author flex items-center">
@@ -74,12 +78,61 @@ const displayNews = (allnews, dataLimit) => {
                                     <i class="fa-solid fa-star-half-stroke text-orange-400"></i>
                                     
                             </div>
+                            <button onclick="loadNewsDetails('${news._id}')" class="text-orange-400 text-xl" type="button" data-modal-toggle="defaultModal"><i class="fa-solid fa-arrow-right"></i></button>
                         </div>
                     </div>
                     </div>
+                    
 
         `;
+
         newsPlacementElement.appendChild(newsdocument);
+
+
+
+
+    });
+
+
+
+}
+
+const rankElement = (dataRank) => {
+
+    // console.log(dataRank)
+    // // let obj = dataRank;
+    dataRank.sort((s1, s2) => s2.total_view - s1.total_view);
+    // console.log(dataRank);
+
+
+
+
+
+
+}
+
+const loadNewsDetails = async news_id => {
+    const Url = `https://openapi.programming-hero.com/api/news/${news_id}`
+    console.log(Url);
+    const res = await fetch(Url);
+    const data = await res.json();
+    displayDetails(data.data);
+
+}
+
+const displayDetails = newsDetails => {
+    // console.log(newsDetails);
+    let toggleModal = document.getElementById('modal-things');
+    toggleModal.classList.remove('hidden');
+    let detailElement = document.getElementById('news-modal');
+    detailElement.innerHTML = `
+    <img src="${newsDetails[0].image_url}" alt="" class="w-8/12 mx-auto h-full">
+    <p class="text-white text-xl">Author: ${newsDetails[0].author.name ? newsDetails[0].author.name : 'No authors Found'}</p>
+   
+    
+    `
+    let toggleModalClose = document.getElementById("close-modal").addEventListener('click', function () {
+        toggleModal.classList.add('hidden');
 
     });
 
@@ -92,8 +145,5 @@ const displayNews = (allnews, dataLimit) => {
 
 
 
-
-
-
-// loadNews();
+loadNews('01');
 loadCategories();
