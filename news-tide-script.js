@@ -19,14 +19,16 @@ const displayCategories = categories => {
         const viewCategories = document.createElement('li');
         viewCategories.classList.add("list-none")
         viewCategories.innerHTML = `
-        <button id="${category.category_id}" onclick="loadNews('${category.category_id}')" class="px-10 lg:text-2xl md:text-xl text-1xl font-bold hover:text-orange-400">${category.category_name}</button>
+        <button id="${category.category_id}" onclick="loadNews('${category.category_id}'); toggleSpinner(true)" class="px-10 lg:text-2xl md:text-xl text-1xl font-bold hover:text-orange-400">${category.category_name}</button>
         `;
 
 
         categoryElement.appendChild(viewCategories);
 
+
     });
-    toggleSpinner(true);
+
+
 
 
 }
@@ -44,7 +46,12 @@ const displayNews = (allnews) => {
     rankElement(allnews);
     // console.log(allnews);
     let elementAmount = document.getElementById('item-amount');
-    elementAmount.innerText = `${allnews.length} Items found `
+    elementAmount.innerText = `${allnews.length} Items found `;
+
+    let spinnerNullElement = document.getElementById('spinner');
+    if (`${allnews.length}` !== 0) {
+        spinnerNullElement.classList.add("hidden");
+    }
     let newsPlacementElement = document.getElementById('news-things');
 
     newsPlacementElement.innerHTML = "";
@@ -95,12 +102,13 @@ const displayNews = (allnews) => {
         `;
 
         newsPlacementElement.appendChild(newsdocument);
+        toggleSpinner(false);
 
 
 
 
     });
-    toggleSpinner(false);
+
 
 
 }
@@ -149,9 +157,9 @@ const displayDetails = newsDetails => {
 
 }
 
-const toggleSpinner = (spin) => {
+const toggleSpinner = (spin, data) => {
     let spinElement = document.getElementById('spinner');
-    if (spin) {
+    if (spin && data !== 0) {
         spinElement.classList.remove('hidden');
     }
     else {
