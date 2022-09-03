@@ -27,24 +27,30 @@ const displayCategories = categories => {
 
 const loadNews = async id => {
     const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
-    console.log(url);
+    // console.log(url);
     const res = await fetch(url);
     const data = await res.json();
     displayNews(data.data);
     // console.log(data.data);
 }
 
-const displayNews = newsHere => {
+const displayNews = (allnews, dataLimit) => {
+    // console.log(allnews);
     let newsPlacementElement = document.getElementById('news-things');
+    newsPlacementElement.innerHTML = "";
 
-    newsHere.forEach(newsplaced => {
 
-        newsPlacementElement.innerHTML = `
-        <div class="lg:flex  w-7/12 mx-auto rounded-xl lg:items-center p-4 border-2">
-        <img src="${newsplaced.thumbnail_url}" class="mx-auto" alt="">
+
+    allnews.forEach(news => {
+        // console.log(news);
+        let newsdocument = document.createElement("div")
+
+        newsdocument.innerHTML = `
+        <div class="lg:flex w-10/12  lg:w-7/12 mx-auto rounded-xl lg:items-center p-4 border-2 mb-5">
+        <img src="${news.thumbnail_url}" class="mx-auto lg:py-0 py-3" alt="">
                     <div class="texts mx-10">
-                        <h1 class="text-2xl font-medium">${newsplaced.title}</h1>
-                        <p class="text-justify my-2">${newsplaced.details}</p>
+                        <h1 class="text-2xl font-medium">${news.title}</h1>
+                        <p class="text-justify my-2">${news.details.slice(0, 1000)}</p>
 
                         <div class="other-details lg:flex justify-between items-center my-5 ">
                             <div class="author flex items-center">
@@ -56,22 +62,24 @@ const displayNews = newsHere => {
 
                             </div>
                             <div class="views lg:my-0 my-3">
-                                <h3><i class="fa-regular fa-eye"></i>1.5M</h3>
+                                <h3><i class="fa-regular fa-eye"></i>${news.total_view}</h3>
 
                             </div>
                             <div class="stars">
-                                <i class="fa-solid fa-star text-orange-400"></i>
-                                <i class="fa-solid fa-star text-orange-400"></i>
-                                <i class="fa-solid fa-star text-orange-400"></i>
-                                <i class="fa-solid fa-star text-orange-400"></i>
-                                <i class="fa-solid fa-star-half-stroke text-orange-400"></i>
-
+                                
+                                    <i class="fa-solid fa-star text-orange-400"></i>
+                                    <i class="fa-solid fa-star text-orange-400"></i>
+                                    <i class="fa-solid fa-star text-orange-400"></i>
+                                    <i class="fa-solid fa-star text-orange-400"></i>
+                                    <i class="fa-solid fa-star-half-stroke text-orange-400"></i>
+                                    
                             </div>
                         </div>
                     </div>
                     </div>
 
         `;
+        newsPlacementElement.appendChild(newsdocument);
 
     });
 
